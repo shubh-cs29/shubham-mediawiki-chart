@@ -1,0 +1,26 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mediawiki-application
+spec:
+  selector:
+    matchLabels:
+      app: mediawiki-application
+  replicas: {{ .Values.mediawikiApp.replicas }}
+  template:
+    metadata:
+      labels:
+        app: mediawiki-application
+    spec:
+      containers:
+        - name: mediawiki
+          image: {{ .Values.mediawikiApp.image }}
+          volumeMounts:
+            - mountPath: /var/www/html/images
+              name: mediawiki-volume
+          ports:
+            - containerPort: {{ .Values.mediawikiApp.containerPort }}
+      volumes:
+        - name: mediawiki-volume
+
