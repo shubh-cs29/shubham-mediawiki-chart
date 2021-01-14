@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mediawiki-database
+spec:
+  selector:
+    matchLabels:
+      app: mediawiki-database
+  replicas: {{.Values.mediawikiDB.replicas}}
+  template:
+    metadata:
+      labels:
+        app: mediawiki-database
+    spec:
+      containers:
+        - name: mariadb
+          image: {{.Values.mediawikiDB.image}}
+          env:
+            - name: MYSQL_DATABASE
+              value: {{.Values.mediawikiDB.database.name}}
+            - name: MYSQL_USER
+              value: {{.Values.mediawikiDB.database.user}}
+            - name: MYSQL_PASSWORD
+              value: {{.Values.mediawikiDB.database.password}}
+            - name: MYSQL_RANDOM_ROOT_PASSWORD
+              value: 'yes'
